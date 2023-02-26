@@ -1,5 +1,6 @@
 # numbertokanji
-アラビア数字を漢数字に，漢数字をアラビア数字に変換する．変換作業はFastAPIで行われる．\n
+アラビア数字を漢数字に，漢数字をアラビア数字に変換する．変換作業はFastAPIで行われる．
+<br>
 使用方法：
 FastAPIの基本的な使い方，環境構築はこちらからhttps://fastapi.tiangolo.com/ja/
 
