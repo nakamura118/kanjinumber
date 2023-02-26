@@ -1,6 +1,6 @@
 from fastapi import FastAPI,status,Response
 from starlette.middleware.cors import CORSMiddleware # 追加
-import re
+import re #文字列分割用標準ライブラリ
 
 app = FastAPI()
 
@@ -101,4 +101,3 @@ def thousandChange(kanjiThousand:str):
         return ""#kanji2numberでエラー起こす用
     return int(thousandNumber)
 
-#http://127.0.0.1:8000/v1/number2kanji/10
