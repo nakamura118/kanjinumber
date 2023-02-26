@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>kanjinumbers</title>
+<style>
+ 
+</style>
+</head>
+
+<body>
+
+<h1 id="tool">数字漢数字変換ツール</h1>
+
+　数字:
+<input type="number" id="number"  size="20" min="0" max="9999999999999999">
+<input type="button" value="数字変換" id="numberTranslate"> 
+
+<p>　入力値＝<span id="numberInput">？</span></p>
+<p>　出力値＝<span id="numberOutput">？</span></p>
+<br>
+
+漢数字:
+<input type="text" id="kanji" size="20" maxlength="19">
+<input type="button" value="漢数字変換" id="kanjiTranslate"> 
+
+<p>　入力値＝<span id="kanjiInput">？</span></p>
+<p>　出力値＝<span id="kanjiOutput">？</span></p>
+
+
+<script>
+    const request = new XMLHttpRequest();
+
+    //documentの変更number->kanji
+    const numberTranslateElement=document.getElementById("numberTranslate");
+    numberTranslateElement.addEventListener("click", function(){
+        let numberValue=document.getElementById("number").value;
+        
+        const numberInputElement=document.getElementById("numberInput");
+        const numberOutputElement=document.getElementById("numberOutput");
+        
+        request.open("GET", `http://127.0.0.1:8000/v1/number2kanji/${numberValue}`, true);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function () {
+            if (request.readyState == 4 && request.status == 200) { 
+                let data = this.response;
+                console.log(data.result);
+                numberOutputElement.innerHTML=data.result;   
+            }
+            else{numberOutputElement.innerHTML="変換できません";}
+        };
+        request.onerror=function(){
+            alert("Request failed");
+        };
+        numberInputElement.innerHTML=numberValue;
+        
+
+    },false);
+
+    //documentの変更
+    const kanjiTranslateElement=document.getElementById("kanjiTranslate");
+    kanjiTranslateElement.addEventListener("click", function(){
+        const kanjiValue=document.getElementById("kanji").value;
+        const kanjiInputElement=document.getElementById("kanjiInput");
+        const kanjiOutputElement=document.getElementById("kanjiOutput");
+        
+        request.open("GET", `http://127.0.0.1:8000/v1/kanji2number/${kanjiValue}`, true);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function () {
+            if (request.readyState == 4 && request.status == 200) { 
+                let data = this.response;
+                console.log(data.result);
+                kanjiOutputElement.innerHTML=data.result;   
+            }
+            else{kanjiOutputElement.innerHTML="変換できません";}
+        };
+        request.onerror=function(){
+            alert("Request failed");
+        };
+        kanjiInputElement.innerHTML=kanjiValue;
+    },false);
+    
+</script>
+</body>
+
+</html>
