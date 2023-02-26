@@ -3,7 +3,7 @@
 <br>
 numberchangeAPI.pyはFastAPIから作られている．<br>
 使用方法：<br>
-FastAPIの基本的な使い方，環境構築の詳細はこちらからhttps://fastapi.tiangolo.com/ja/
+FastAPIの基本的な使い方，環境構築の詳細はこちらからhttps://fastapi.tiangolo.com/ja/<br>
 ・APIの起動方法<br>
 APIプログラムダウンロード<br>
 pythonが入っている状況でターミナルで以下を実行<br>
