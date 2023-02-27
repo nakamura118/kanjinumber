@@ -75,8 +75,8 @@ def kanji2number(kanjiNumber: str):
 
 def thousandChange(kanjiThousand:str):
     thousandNumber:int=0#返り値
-    digitsKanji=["千","百","拾",""]#千,百,十,一の位(漢数字)
-    digitsNumber=[1000,100,10,1]#千,百,十,一,の位(数字)
+    digitsKanji=["千","百","拾"]#千,百,十の位(漢数字)
+    digitsNumber=[1000,100,10]#千,百,十の位(数字)
     decimal={""  : 0,#漢数字のとき途中の零は書かないため
              "壱": 1,
              "弐": 2,
@@ -88,16 +88,20 @@ def thousandChange(kanjiThousand:str):
              "八": 8,
              "九": 9}#0～9の値
     try:
-        for i in range(4):#千,百,十,一の位の4回繰り返す
-            if(i==3 and len(kanjiThousand)!=0):#一の位用
-                kanjiThousand=re.split("千|百|拾",kanjiThousand)#千,百,十で分割
-                #対応するdigitsNumberと分割後の一番右側の漢数字を掛ける
-                thousandNumber+=digitsNumber[i]*decimal[kanjiThousand[(len(kanjiThousand))-1]]
+        for i in range(3):#千,百,十,一の位の4回繰り返す
+            if(kanjiThousand==""):break
             elif(digitsKanji[i] in kanjiThousand):#千,百,十の位用
+                #千,百,十で分割
+                kanjiThousand=kanjiThousand.split(digitsKanji[i])
+                if(len(kanjiThousand)!=2):#千,百,十で同じものが含まれている場合
+                    return "error" #kanji2numberでエラー起こす用
                 #対応するdigitsNumberと千，百，拾の前の漢数字を掛ける
-                thousandNumber+=digitsNumber[i]*decimal[kanjiThousand[(kanjiThousand.find(digitsKanji[i]))-1]]
-        print(thousandNumber)
+                thousandNumber+=digitsNumber[i]*decimal[kanjiThousand[0]]
+                kanjiThousand=kanjiThousand[1]#値の更新
+        if(len(kanjiThousand)!=0):#一の位用
+            #対応するdigitsNumberと分割後の一番右側の漢数字を掛ける
+            thousandNumber+=decimal[kanjiThousand]
     except(KeyError,IndexError):
-        return ""#kanji2numberでエラー起こす用
+        return "error" #kanji2numberでエラー起こす用
     return int(thousandNumber)
 
