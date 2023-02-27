@@ -30,7 +30,7 @@
 
 <script>
     const request = new XMLHttpRequest();
-
+    const url="https://dl.ints.info.hiroshima-cu.ac.jp/fastapi/" //環境に依存する
     //documentの変更number->kanji
     const numberTranslateElement=document.getElementById("numberTranslate");
     numberTranslateElement.addEventListener("click", function(){
@@ -39,7 +39,7 @@
         const numberInputElement=document.getElementById("numberInput");
         const numberOutputElement=document.getElementById("numberOutput");
         
-        request.open("GET", `http://127.0.0.1:8000/v1/number2kanji/${numberValue}`, true);
+        request.open("GET", `${url}v1/number2kanji/${numberValue}`, true);
         request.responseType = 'json';
         request.send();
         request.onload = function () {
@@ -48,7 +48,9 @@
                 console.log(data.result);
                 numberOutputElement.innerHTML=data.result;   
             }
-            else{numberOutputElement.innerHTML="変換できません";}
+            else if(request.status==204){
+                numberOutputElement.innerHTML="変換できません";
+            }
         };
         request.onerror=function(){
             alert("Request failed");
@@ -65,7 +67,7 @@
         const kanjiInputElement=document.getElementById("kanjiInput");
         const kanjiOutputElement=document.getElementById("kanjiOutput");
         
-        request.open("GET", `http://127.0.0.1:8000/v1/kanji2number/${kanjiValue}`, true);
+        request.open("GET", `${url}v1/kanji2number/${kanjiValue}`, true);
         request.responseType = 'json';
         request.send();
         request.onload = function () {
@@ -74,7 +76,9 @@
                 console.log(data.result);
                 kanjiOutputElement.innerHTML=data.result;   
             }
-            else{kanjiOutputElement.innerHTML="変換できません";}
+            else if(request.status==204){
+                numberOutputElement.innerHTML="変換できません";
+            }
         };
         request.onerror=function(){
             alert("Request failed");
