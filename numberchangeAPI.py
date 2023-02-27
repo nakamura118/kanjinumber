@@ -1,6 +1,5 @@
 from fastapi import FastAPI,status,Response
 from starlette.middleware.cors import CORSMiddleware # 追加
-import re #文字列分割用標準ライブラリ
 
 app = FastAPI()
 
@@ -16,8 +15,10 @@ def number2kanji(number,response: Response):
     #取り扱い可能ではない場合
     if(("." in judge) or ("-" in judge) or (len(judge)>16)):
         return Response(status_code = status.HTTP_204_NO_CONTENT)   
-         
-    number=int(number)#どんな形でもint型に変換
+    try:
+        number=int(number)#どんな形でもint型に変換
+    except(ValueError):#数字以外が含まれている場合
+        return Response(status_code = status.HTTP_204_NO_CONTENT)   
     decimalList=["零","壱","弐","参","四","五","六","七","八","九"]#0～9の値
     digitsList=["","拾","百","千"]#一，十，百，千の位
     tenthousandList=["万","億","兆"]#万，億，兆の位
@@ -53,22 +54,24 @@ def kanji2number(kanjiNumber: str):
     tenthousandKanji=["兆","億","万"]#兆,億,万の位(漢数字)
     tenthousandNumber=[(10**12),(10**8),(10**4)]#兆,億,万の位(数字)
     number:int=0#返り値
-    
     if(len(kanjiNumber)==0):
         return Response(status_code = status.HTTP_204_NO_CONTENT) 
-    
     if(kanjiNumber=="零"):return 0 
     try:
         for i in range(3):#兆,億,万の位用
             if(tenthousandKanji[i] in kanjiNumber):#"兆","億","万"を含むとき
                 #"兆"or"億"or"万"で分割
                 kanjiNumber=kanjiNumber.split(tenthousandKanji[i])
+                if(len(kanjiNumber)!=2):#"兆"or"億"or"万"で同じものが含まれている場合
+                    return Response(status_code = status.HTTP_204_NO_CONTENT)  
+                elif(kanjiNumber[0]==""):#前の漢数字がないとき
+                    return Response(status_code = status.HTTP_204_NO_CONTENT)  
                 #対応するdigitsNumberと兆,億,万の前の漢数字を掛ける
                 number+=tenthousandNumber[i]*thousandChange(kanjiThousand=kanjiNumber[0])
                 kanjiNumber=kanjiNumber[1]#kanjiNumberを更新
         if(len(kanjiNumber)!=0):#万より下の桁用
             number+=thousandChange(kanjiThousand=kanjiNumber)
-    except(TypeError):
+    except(TypeError,MemoryError):
         return Response(status_code = status.HTTP_204_NO_CONTENT)    
 
     return {"result":number}
@@ -97,7 +100,7 @@ def thousandChange(kanjiThousand:str):
                     return "error" #kanji2numberでエラー起こす用
                 #対応するdigitsNumberと千，百，拾の前の漢数字を掛ける
                 thousandNumber+=digitsNumber[i]*decimal[kanjiThousand[0]]
-                kanjiThousand=kanjiThousand[1]#値の更新
+                kanjiThousand=kanjiThousand[1]
         if(len(kanjiThousand)!=0):#一の位用
             #対応するdigitsNumberと分割後の一番右側の漢数字を掛ける
             thousandNumber+=decimal[kanjiThousand]
