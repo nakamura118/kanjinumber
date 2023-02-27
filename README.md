@@ -10,6 +10,9 @@ pythonが入っている状況でターミナルで以下を実行<br>
 $ pip install fastapi<br>
 $ pip install "uvicorn[standard]"<br>
 $ uvicorn (APIのファイル名):app --reload --host (IPアドレス) --port (ポート番号)<br>
+(例)uvicorn numberchangeAPI:app --reload --host 127.0.0.1 --port 8080<br>
+APIを起動後，クライアント側（HTNL）から.open("GET","${url}v1/number2kanji/${numberValue}")などで呼び出す<br>
+（この時，urlは実行環境に依存する）
 <br>
 
 APIのエンドポイントは以下の通り
