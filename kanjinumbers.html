@@ -29,7 +29,7 @@
 
 
 <script>
-    const request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();//APIの起動のため
     const url="https://dl.ints.info.hiroshima-cu.ac.jp/fastapi/" //環境に依存する
     //documentの変更number->kanji
     const numberTranslateElement=document.getElementById("numberTranslate");
@@ -42,8 +42,8 @@
         request.open("GET", `${url}v1/number2kanji/${numberValue}`, true);
         request.responseType = 'json';
         request.send();
-        request.onload = function () {
-            if (request.readyState == 4 && request.status == 200) { 
+        request.onload = function () { //APIが起動したとき
+            if (request.readyState == 4 && request.status == 200) { 
                 let data = this.response;
                 console.log(data.result);
                 numberOutputElement.innerHTML=data.result;   
@@ -70,7 +70,7 @@
         request.open("GET", `${url}v1/kanji2number/${kanjiValue}`, true);
         request.responseType = 'json';
         request.send();
-        request.onload = function () {
+        request.onload = function () { //APIが起動したとき
             if (request.readyState == 4 && request.status == 200) { 
                 let data = this.response;
                 console.log(data.result);
