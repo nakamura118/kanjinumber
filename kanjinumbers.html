@@ -77,7 +77,7 @@
                 kanjiOutputElement.innerHTML=data.result;   
             }
             else if(request.status==204){
-                numberOutputElement.innerHTML="変換できません";
+                kanjiOutputElement.innerHTML="変換できません";
             }
         };
         request.onerror=function(){
