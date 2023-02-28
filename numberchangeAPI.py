@@ -13,7 +13,7 @@ app.add_middleware(
 def number2kanji(number,response: Response):
     judge=str(number)#変換出来るかどうか判定のため文字列に位変換
     #取り扱い可能ではない場合
-    if(("." in judge) or ("-" in judge) or (len(judge)>16)):
+    if(("." in judge) or ("-" in judge) or (len(judge)>16) or (judge=="")):
         return Response(status_code = status.HTTP_204_NO_CONTENT)   
     try:
         number=int(number)#どんな形でもint型に変換
@@ -98,6 +98,8 @@ def thousandChange(kanjiThousand:str):
                 kanjiThousand=kanjiThousand.split(digitsKanji[i])
                 if(len(kanjiThousand)!=2):#千,百,十で同じものが含まれている場合
                     return "error" #kanji2numberでエラー起こす用
+                elif(kanjiThousand[0]==""):#前の漢数字がないとき
+                    return "error"  #kanji2numberでエラー起こす用       
                 #対応するdigitsNumberと千，百，拾の前の漢数字を掛ける
                 thousandNumber+=digitsNumber[i]*decimal[kanjiThousand[0]]
                 kanjiThousand=kanjiThousand[1]
