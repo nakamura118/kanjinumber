@@ -91,7 +91,7 @@ def thousandChange(kanjiThousand:str):
              "八": 8,
              "九": 9}#0～9の値
     try:
-        for i in range(3):#千,百,十,一の位の4回繰り返す
+        for i in range(3):#千,百,十の位の3回繰り返す
             if(kanjiThousand==""):break
             elif(digitsKanji[i] in kanjiThousand):#千,百,十の位用
                 #千,百,十で分割
